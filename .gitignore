@@ -5,11 +5,11 @@
 .vscode/
 
 # Environment
-*/.env
+.env
 
 # Python
-*/venv
-*/__pycache__/
+.venv
+__pycache__/
 
 # React.js
 node_modules
