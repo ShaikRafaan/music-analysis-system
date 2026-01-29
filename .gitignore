@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Environment
+*/.env
+
+# Python
+*/venv
+*/__pycache__/
+
+# React.js
+node_modules
