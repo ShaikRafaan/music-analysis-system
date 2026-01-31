@@ -7,9 +7,10 @@
 # Environment
 .env
 
+
 # Python
 .venv
 __pycache__/
-
+venv
 # React.js
 node_modules
