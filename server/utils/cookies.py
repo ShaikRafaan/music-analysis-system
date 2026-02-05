@@ -1,4 +1,4 @@
-from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
+from itsdangerous import URLSafeTimedSerializer
 from fastapi.responses import RedirectResponse
 from schema import ServerSettings, CookieConfig
 from dotenv import load_dotenv
