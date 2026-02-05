@@ -6,5 +6,10 @@ class ServerSettings(BaseSettings):
     debug: bool
     cors_origins: str
 
+    spotify_client_id: str
+    spotify_redirect_uri: str
+
+    client_uri: str
+
     class Config:
         env_file = ".env"
