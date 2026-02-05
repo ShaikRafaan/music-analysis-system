@@ -8,8 +8,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 server = FastAPI()
-server.include_router(main_router)
-
 settings = ServerSettings()
 
 origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
@@ -22,6 +20,8 @@ server.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+server.include_router(main_router)
 
 @server.get("/", response_model=RootResponse, summary="Root endpoint", tags=["General"])
 async def root():
