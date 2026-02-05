@@ -7,7 +7,7 @@ from schema import ServerSettings, StatusResponse, PKCECookie, SpotifyTokenRespo
 from itsdangerous import BadSignature, SignatureExpired
 from urllib.parse import urlencode
 from dotenv import load_dotenv
-from utils import get_pkce, encode_cookie, decode_cookie, set_cookie, delete_cookie
+from utils import get_pkce, encode_cookie, decode_cookie, set_cookie, delete_cookie, get_token, InvalidSessionError, AuthenticationError
 
 
 load_dotenv()
@@ -154,16 +154,10 @@ async def status(request: Request):
     session_cookie = request.cookies.get(settings.session_cookie)
     if not session_cookie:
         return StatusResponse(authenticated=False)
-
+    
     try:
-        session = decode_cookie(session_cookie, max_age=settings.session_cookie_max_age)
-    except (SignatureExpired, BadSignature):
+        access_token = get_token(session_cookie)
+    except (InvalidSessionError, AuthenticationError):
         return StatusResponse(authenticated=False)
 
-    access_token = session.get("access_token")
-    expires_at = session.get("expires_at", 0)
-    if not access_token or int(time.time()) >= int(expires_at):
-        return StatusResponse(authenticated=False)
-
-    scopes = session.get("scope")
-    return StatusResponse(authenticated=True, scopes=scopes.split())
+    return StatusResponse(authenticated=True)

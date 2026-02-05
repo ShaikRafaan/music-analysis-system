@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional
 
 
 class CookieConfig(BaseModel):
@@ -14,7 +14,6 @@ class PKCECookie(BaseModel):
 
 class StatusResponse(BaseModel):
     authenticated: bool
-    scopes: Optional[List[str]] = None
 
 
 class SpotifyTokenResponse(BaseModel):
