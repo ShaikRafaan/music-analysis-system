@@ -9,6 +9,7 @@ class ServerSettings(BaseSettings):
 
     spotify_auth_url: str
     spotify_token_url: str
+    spotify_base_url: str
     spotify_client_id: str
     spotify_redirect_uri: str
     spotify_token_scopes: str
