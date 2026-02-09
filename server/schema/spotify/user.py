@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional,Literal
 
 
 class ContentSettings(BaseModel):
@@ -168,6 +168,7 @@ class UserTopItems(BaseModel):
     Spotify docs:
     - https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks
     """
+    type: Literal["artists", "tracks"]
     href: str
     limit: int
     next : Optional[str] = None
