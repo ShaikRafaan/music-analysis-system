@@ -174,5 +174,4 @@ class UserTopItems(BaseModel):
     offset: int
     previous: Optional[str] = None
     total: int
-    items: ArtistObjects | TrackObjects
-    
+    items: List[ArtistObjects] | List[TrackObjects]
