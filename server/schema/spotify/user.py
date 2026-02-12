@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import List, Optional,Literal
+from pydantic import BaseModel,Field
+from typing import List, Optional,Literal,Union,Annotated
 
 
 class ContentSettings(BaseModel):
@@ -45,11 +45,12 @@ class UserProfile(BaseModel):
     premium: bool
     user_uri: str
 
-class external_urls(BaseModel):
+class ExternalUrls(BaseModel):
     spotify: str
+    
 
-class restrictions(BaseModel):
-    reason: str
+class Restrictions(BaseModel):
+    reason: Optional[str]
 
 
 class Followers(BaseModel):
@@ -60,19 +61,19 @@ class Album(BaseModel):
     album_type: str
     total_tracks: int
     available_markets: List[str]
-    external_urls: external_urls
+    external_urls: ExternalUrls
     href: str
     id: str
     images: List[ProfileImage]
     name: str
     release_date: str
     release_date_precision: str
-    restrictions: restrictions
+    restrictions: Optional[Restrictions] = None
     type: str
     uri: str
 
 class Artist(BaseModel):
-    external_urls: external_urls
+    external_urls: ExternalUrls
     href: str
     id: str
     name: str
@@ -95,7 +96,7 @@ class ArtistObjects(BaseModel):
     -type: str -> type: str (the object type, "artist")
     -uri: str -> artist_uri: str (Spotify URI object for the artist, resource identifier for the artist, can be used to navigate to an artist's profile on the desktop client)
     """
-    external_urls: external_urls
+    external_urls: ExternalUrls
     followers: Followers    
     genres: List[str]
     href: str
@@ -103,7 +104,7 @@ class ArtistObjects(BaseModel):
     images: List[ProfileImage]
     name: str
     popularity:int
-    type: str
+    type: Literal["artist"]
     uri: str
 
 class TrackObjects(BaseModel):
@@ -131,26 +132,30 @@ class TrackObjects(BaseModel):
     -is_local: bool -> is_local: bool (whether or not the track is a local file)
 
     """
-    album : Album
-    artist:List[Artist]
-    available_markets: List[str]    
-    disc_number: int
-    duration_ms: int
+    album : Optional[Album] = None
+    artists:Optional[List[Artist]] = None
+    available_markets: Optional[List[str]] = None
+    disc_number: Optional[int] = None
+    duration_ms: Optional[int] = None
     explicit: bool
-    external_urls: external_urls
+    external_urls: ExternalUrls
     href: str
     id: str
-    is_playable: bool
+    is_playable: Optional[bool] = None
     linked_from: Optional[dict] = None
-    restriction: restrictions
     name: str
-    popularity: int
+    popularity: Optional[int] = None
     preview_url: Optional[str] = None
+    restrictions: Optional[Restrictions] = None
     track_number: int
-    type: str
+    type: Literal["track"]
     uri: str
     is_local: bool
 
+SpotifyItem = Annotated[
+    Union[ArtistObjects, TrackObjects],
+    Field(discriminator="type")
+]
 
 
 
@@ -175,4 +180,4 @@ class UserTopItems(BaseModel):
     offset: int
     previous: Optional[str] = None
     total: int
-    items: List[ArtistObjects] | List[TrackObjects]
+    items: List[SpotifyItem]
