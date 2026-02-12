@@ -1,10 +1,6 @@
 from pydantic import BaseModel,Field
 from typing import List, Optional,Literal,Union,Annotated
-
-class ProfileImage(BaseModel):
-    url: str
-    height: int
-    width: int
+from .user import ProfileImage
 
 
 class ExternalUrls(BaseModel):
